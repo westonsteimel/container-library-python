@@ -1,2 +1,3 @@
 # docker-python-base
-A very minimal python base image for Docker
+
+Minimal python libc-based images inspired by [Google's Distroless images](https://github.com/GoogleContainerTools/distroless)
