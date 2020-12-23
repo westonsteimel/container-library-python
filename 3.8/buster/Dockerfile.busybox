@@ -4,9 +4,8 @@ ADD prepare-rootfs.sh /
 
 RUN ./prepare-rootfs.sh
 
-FROM scratch
+FROM busybox:glibc
 
 COPY --from=builder /build/rootfs/ /
 
-ENV PATH="/usr/local/bin"
 ENV LD_LIBRARY_PATH="/usr/local/lib/"
