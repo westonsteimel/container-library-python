@@ -27,6 +27,9 @@ cp --recursive --archive /usr/share/zoneinfo/* /build/rootfs/usr/share/zoneinfo/
 cp --archive /usr/lib/os-release /build/rootfs/usr/lib/
 cp --archive /etc/debian_version /build/rootfs/etc/
 cp --archive /etc/os-release /build/rootfs/etc/
+cp --archive /etc/protocols /build/rootfs/etc/
+cp --archive /etc/rpc /build/rootfs/etc/
+cp --archive /etc/services /build/rootfs/etc/
 
 rm --recursive --force \
     /build/rootfs/lib/libaudit* \
@@ -90,6 +93,7 @@ dpkg-query --status libtinfo6 > /build/rootfs/var/lib/dpkg/status.d/libtinfo6
 dpkg-query --status libunistring2 > /build/rootfs/var/lib/dpkg/status.d/libunistring2
 dpkg-query --status libuuid1 > /build/rootfs/var/lib/dpkg/status.d/libuuid1
 dpkg-query --status libzstd1 > /build/rootfs/var/lib/dpkg/status.d/libzstd1
+dpkg-query --status netbase > /build/rootfs/var/lib/dpkg/status.d/netbase
 dpkg-query --status tzdata > /build/rootfs/var/lib/dpkg/status.d/tzdata
 dpkg-query --status zlib1g > /build/rootfs/var/lib/dpkg/status.d/zlib1g
 
