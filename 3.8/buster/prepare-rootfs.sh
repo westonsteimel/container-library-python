@@ -3,6 +3,13 @@
 set -e
 
 apt-get update && apt-get install -y --no-install-recommends \
+    dpkg-dev
+
+GNU_ARCH="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)"
+
+apt-get purge -y --auto-remove dpkg-dev
+
+apt-get update && apt-get install -y --no-install-recommends \
     libmpdec2 \
     tzdata 
 
@@ -18,8 +25,8 @@ mkdir --parents \
     /build/rootfs/etc/ssl/certs \
     /build/rootfs/var/lib/dpkg/status.d
 
-cp --recursive --archive /lib/x86_64-linux-gnu/* /build/rootfs/lib/
-cp --recursive --archive /usr/lib/x86_64-linux-gnu/* /build/rootfs/usr/lib/
+cp --recursive --archive /lib/${GNU_ARCH}/* /build/rootfs/lib/
+cp --recursive --archive /usr/lib/${GNU_ARCH}/* /build/rootfs/usr/lib/
 cp --recursive --archive /usr/local/lib/* /build/rootfs/usr/local/lib/
 cp --recursive --archive /usr/local/bin/* /build/rootfs/usr/local/bin/
 cp --recursive --archive /usr/local/include/* /build/rootfs/usr/local/include/
