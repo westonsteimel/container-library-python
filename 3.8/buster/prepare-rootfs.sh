@@ -58,7 +58,9 @@ rm --recursive --force \
     /build/rootfs/usr/lib/libdebconf* \
     /build/rootfs/usr/lib/libgdbm* \
     /build/rootfs/usr/lib/libgnutls* \
+    /build/rootfs/usr/lib/libhogweed* \
     /build/rootfs/usr/lib/libidn* \
+    /build/rootfs/usr/lib/libnettle* \
     /build/rootfs/usr/lib/libp11* \
     /build/rootfs/usr/lib/libpcre* \
     /build/rootfs/usr/lib/libseccomp* \
@@ -78,12 +80,10 @@ dpkg-query --status libexpat1 > /build/rootfs/var/lib/dpkg/status.d/libexpat1
 dpkg-query --status libffi6 > /build/rootfs/var/lib/dpkg/status.d/libffi6
 dpkg-query --status libgcc1 > /build/rootfs/var/lib/dpkg/status.d/libgcc1
 dpkg-query --status libgmp10 > /build/rootfs/var/lib/dpkg/status.d/libgmp10
-dpkg-query --status libhogweed4 > /build/rootfs/var/lib/dpkg/status.d/libhogweed4
 dpkg-query --status liblz4-1 > /build/rootfs/var/lib/dpkg/status.d/liblz4
 dpkg-query --status liblzma5 > /build/rootfs/var/lib/dpkg/status.d/liblzma5
 dpkg-query --status libmpdec2 > /build/rootfs/var/lib/dpkg/status.d/libmpdec2
 dpkg-query --status libncursesw6 > /build/rootfs/var/lib/dpkg/status.d/libncursesw6
-dpkg-query --status libnettle6 > /build/rootfs/var/lib/dpkg/status.d/libnettle6
 dpkg-query --status libreadline7 > /build/rootfs/var/lib/dpkg/status.d/libreadline7
 dpkg-query --status libsqlite3-0 > /build/rootfs/var/lib/dpkg/status.d/libsqlite3
 dpkg-query --status libss2 > /build/rootfs/var/lib/dpkg/status.d/libss2
