@@ -1,4 +1,9 @@
-FROM docker.io/debian:%%PLACEHOLDER%%
+#
+# NOTE: THIS DOCKERFILE IS GENERATED VIA "update.sh"
+#
+# PLEASE DO NOT EDIT IT DIRECTLY.
+#
+FROM docker.io/debian:sid-slim
 
 # ensure local python is preferred over distribution python
 ENV PATH="/usr/local/bin:${PATH}"
@@ -13,12 +18,11 @@ RUN set -eux; \
 	apt-get install -y --no-install-recommends \
 		ca-certificates \
 		netbase \
-		tzdata \
 	; \
 	rm -rf /var/lib/apt/lists/*
 
-ARG GPG_KEY="%%PLACEHOLDER%%"
-ENV PYTHON_VERSION="%%PLACEHOLDER%%"
+ARG GPG_KEY="E3FF2839C048B25C084DEBE9B26995E310250568"
+ENV PYTHON_VERSION="3.8.7"
 
 RUN set -ex \
 	\
@@ -70,42 +74,6 @@ RUN set -ex \
 		--without-ensurepip \
 	&& make -j "$(nproc)" \
 		LDFLAGS="-Wl,--strip-all" \
-# setting PROFILE_TASK makes "--enable-optimizations" reasonable: https://bugs.python.org/issue36044 / https://github.com/docker-library/python/issues/160#issuecomment-509426916
-		PROFILE_TASK='-m test.regrtest --pgo \
-			test_array \
-			test_base64 \
-			test_binascii \
-			test_binhex \
-			test_binop \
-			test_bytes \
-			test_c_locale_coercion \
-			test_class \
-			test_cmath \
-			test_codecs \
-			test_compile \
-			test_complex \
-			test_csv \
-			test_decimal \
-			test_dict \
-			test_float \
-			test_fstring \
-			test_hashlib \
-			test_io \
-			test_iter \
-			test_json \
-			test_long \
-			test_math \
-			test_memoryview \
-			test_pickle \
-			test_re \
-			test_set \
-			test_slice \
-			test_struct \
-			test_threading \
-			test_time \
-			test_traceback \
-			test_unicode \
-		' \
 	&& make install \
 	&& rm -rf /usr/src/python \
 	\
@@ -140,10 +108,10 @@ RUN cd /usr/local/bin \
 	&& ln -s python3-config python-config
 
 # if this is called "PIP_VERSION", pip explodes with "ValueError: invalid truth value '<VERSION>'"
-ENV PYTHON_PIP_VERSION="%%PLACEHOLDER%%"
+ENV PYTHON_PIP_VERSION="20.3.3"
 # https://github.com/pypa/get-pip
-ARG PYTHON_GET_PIP_URL="%%PLACEHOLDER%%"
-ARG PYTHON_GET_PIP_SHA256="%%PLACEHOLDER%%"
+ARG PYTHON_GET_PIP_URL="https://github.com/pypa/get-pip/raw/5f38681f7f5872e4032860b54e9cc11cf0374932/get-pip.py"
+ARG PYTHON_GET_PIP_SHA256="6a0b13826862f33c13b614a921d36253bfa1ae779c5fbf569876f3585057e9d2"
 
 RUN set -ex; \
 	\

@@ -1,4 +1,4 @@
-FROM python:3.8-slim as builder
+FROM docker.io/python:3.8-slim as builder
 
 ADD prepare-rootfs.sh /
 

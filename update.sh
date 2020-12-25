@@ -50,11 +50,13 @@ declare -A gpgKeys=(
 
 cd "$(dirname "$(readlink -f "$BASH_SOURCE")")"
 
-versions=( "$@" )
-if [ ${#versions[@]} -eq 0 ]; then
-	versions=( "3.6", "3.7", "3.8", "3.9", "3.10" )
+python_versions=( "$@" )
+if [ ${#python_versions[@]} -eq 0 ]; then
+	python_versions=( "3.6" "3.7" "3.8" "3.9" "3.10-rc" )
 fi
-versions=( "${versions[@]%/}" )
+python_versions=( "${python_versions[@]%/}" )
+
+debian_versions=( "buster" "bullseye" "sid" )
 
 pipVersion="$(curl -fsSL 'https://pypi.org/pypi/pip/json' | jq -r .info.version)"
 getPipCommit="$(curl -fsSL 'https://github.com/pypa/get-pip/commits/master/get-pip.py.atom' | tac|tac | awk -F '[[:space:]]*[<>/]+' '$2 == "id" && $3 ~ /Commit/ { print $4; exit }')"
@@ -87,13 +89,12 @@ is_good_version() {
 	return 0
 }
 
-for version in "${versions[@]}"; do
+for version in "${python_versions[@]}"; do
 	rcVersion="${version%-rc}"
 	rcGrepV='-v'
 	if [ "$rcVersion" != "$version" ]; then
 		rcGrepV=
 	fi
-
 	possibles=( $(
 		{
 			git ls-remote --tags https://github.com/python/cpython.git "refs/tags/v${rcVersion}.*" \
@@ -112,7 +113,6 @@ for version in "${versions[@]}"; do
 	declare -A impossible=()
 	for possible in "${possibles[@]}"; do
 		rcPossible="${possible%%[a-z]*}"
-
 		# varnish is great until it isn't (usually the directory listing we scrape below is updated/uncached significantly later than the release being available)
 		if is_good_version "$version" "$rcPossible" "$possible"; then
 			fullVersion="$possible"
@@ -153,49 +153,32 @@ for version in "${versions[@]}"; do
 	echo "$version: $fullVersion"
 
 	for v in \
-		{stretch,buster}{/slim,}
+		{slim,} \
 	; do
-		dir="$v/$version"
-		variant="$(basename "$v")"
+        for debian_version in "${debian_versions[@]}"; do
+		    dir="$v/$version/$debian_version"
+		    variant="$(basename "$v")"
 
-		[ -d "$dir" ] || continue
+            mkdir -p $dir
 
-		case "$variant" in
-			slim) template="$variant"; tag="$(basename "$(dirname "$dir")")" ;;
-			windowsservercore-*) template='windowsservercore'; tag="${variant#*-}" ;;
-			alpine*) template='alpine'; tag="${variant#alpine}" ;;
-			*) template='debian'; tag="$variant" ;;
-		esac
-		if [ "$variant" = 'slim' ]; then
-			# use "debian:*-slim" variants for "python:*-slim" variants
-			tag+='-slim'
-		fi
+            case "$variant" in
+			    slim) tag="${debian_version}-slim" ;;
+		    esac
+
 		template="$v/Dockerfile.template"
 
 		{ generated_warning; cat "$template"; } > "$dir/Dockerfile"
 
 		sed -ri \
-			-e 's/^(VAR GPG_KEY) .*/\1 '"${gpgKeys[$version]:-${gpgKeys[$rcVersion]}}"'/' \
-			-e 's/^(ENV PYTHON_VERSION) .*/\1 '"$fullVersion"'/' \
-			-e 's/^(ENV PYTHON_RELEASE) .*/\1 '"${fullVersion%%[a-z]*}"'/' \
-			-e 's/^(ENV PYTHON_PIP_VERSION) .*/\1 '"$pipVersion"'/' \
-			-e 's!^(VAR PYTHON_GET_PIP_URL) .*!\1 '"$getPipUrl"'!' \
-			-e 's!^(VAR PYTHON_GET_PIP_SHA256) .*!\1 '"$getPipSha256"'!' \
+            -e 's/^(ARG GPG_KEY=").*/\1'"${gpgKeys[$version]:-${gpgKeys[$rcVersion]}}"\"'/' \
+			-e 's/^(ENV PYTHON_VERSION=").*/\1'"$fullVersion"\"'/' \
+			-e 's/^(ENV PYTHON_RELEASE=").*/\1'"${fullVersion%%[a-z]*}"\"'/' \
+			-e 's/^(ENV PYTHON_PIP_VERSION=").*/\1'"$pipVersion"\"'/' \
+			-e 's!^(ARG PYTHON_GET_PIP_URL=").*!\1'"$getPipUrl"\"'!' \
+			-e 's!^(ARG PYTHON_GET_PIP_SHA256=").*!\1'"$getPipSha256"\"'!' \
 			-e 's/^(FROM python):.*/\1:'"$version-$tag"'/' \
-			-e 's!^(FROM (debian|buildpack-deps|alpine|mcr[.]microsoft[.]com/[^:]+)):.*!\1:'"$tag"'!' \
+			-e 's!^(FROM (docker.io/debian|buildpack-deps|alpine|mcr[.]microsoft[.]com/[^:]+)):.*!\1:'"$tag"'!' \
 			"$dir/Dockerfile"
-
-		case "$rcVersion/$v" in
-			# https://bugs.python.org/issue11063, https://bugs.python.org/issue20519 (Python 3.7.0+)
-			# A new native _uuid module improves uuid import time and avoids using ctypes.
-			# This requires the development libuuid headers.
-			3.6/alpine*)
-				sed -ri -e '/util-linux-dev/d' "$dir/Dockerfile"
-				;;
-			3.6/*)
-				sed -ri -e '/uuid-dev/d' "$dir/Dockerfile"
-				;;
-		esac
 
 		major="${rcVersion%%.*}"
 		minor="${rcVersion#$major.}"
@@ -218,5 +201,6 @@ for version in "${versions[@]}"; do
 		if [ "$minor" -lt 9 ]; then
 			sed -ri -e '/tzdata/d' "$dir/Dockerfile"
 		fi
+        done
 	done
 done

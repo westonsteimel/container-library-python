@@ -1,4 +1,9 @@
-FROM docker.io/debian:%%PLACEHOLDER%%
+#
+# NOTE: THIS DOCKERFILE IS GENERATED VIA "update.sh"
+#
+# PLEASE DO NOT EDIT IT DIRECTLY.
+#
+FROM docker.io/debian:bullseye-slim
 
 # ensure local python is preferred over distribution python
 ENV PATH="/usr/local/bin:${PATH}"
@@ -13,12 +18,11 @@ RUN set -eux; \
 	apt-get install -y --no-install-recommends \
 		ca-certificates \
 		netbase \
-		tzdata \
 	; \
 	rm -rf /var/lib/apt/lists/*
 
-ARG GPG_KEY="%%PLACEHOLDER%%"
-ENV PYTHON_VERSION="%%PLACEHOLDER%%"
+ARG GPG_KEY="0D96DF4D4110E5C43FBFB17F2D347EA6AA65421D"
+ENV PYTHON_VERSION="3.7.9"
 
 RUN set -ex \
 	\
@@ -140,10 +144,10 @@ RUN cd /usr/local/bin \
 	&& ln -s python3-config python-config
 
 # if this is called "PIP_VERSION", pip explodes with "ValueError: invalid truth value '<VERSION>'"
-ENV PYTHON_PIP_VERSION="%%PLACEHOLDER%%"
+ENV PYTHON_PIP_VERSION="20.3.3"
 # https://github.com/pypa/get-pip
-ARG PYTHON_GET_PIP_URL="%%PLACEHOLDER%%"
-ARG PYTHON_GET_PIP_SHA256="%%PLACEHOLDER%%"
+ARG PYTHON_GET_PIP_URL="https://github.com/pypa/get-pip/raw/5f38681f7f5872e4032860b54e9cc11cf0374932/get-pip.py"
+ARG PYTHON_GET_PIP_SHA256="6a0b13826862f33c13b614a921d36253bfa1ae779c5fbf569876f3585057e9d2"
 
 RUN set -ex; \
 	\
