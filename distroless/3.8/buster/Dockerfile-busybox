@@ -8,7 +8,7 @@ FROM docker.io/westonsteimel/python:3.8-buster-slim
 ADD prepare-rootfs.sh /
 RUN ./prepare-rootfs.sh
 
-FROM scratch
+FROM docker.io/busybox:glibc
 
 COPY --from=builder /build/rootfs/ /
 

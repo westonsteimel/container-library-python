@@ -3,7 +3,7 @@
 #
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
-FROM docker.io/westonsteimel/python:3.8-buster-slim
+FROM docker.io/westonsteimel/python:3.6-bullseye-slim
 
 ADD prepare-rootfs.sh /
 RUN ./prepare-rootfs.sh

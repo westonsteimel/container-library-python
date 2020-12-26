@@ -153,54 +153,73 @@ for version in "${python_versions[@]}"; do
 	echo "$version: $fullVersion"
 
 	for v in \
-		{slim,} \
+		{slim,distroless} \
 	; do
+        echo "  ${v}"
         for debian_version in "${debian_versions[@]}"; do
-		    dir="$v/$version/$debian_version"
+		    dir="${v}/${version}/${debian_version}"
 		    variant="$(basename "$v")"
 
-            mkdir -p $dir
+            mkdir -p "${dir}"
+            echo "    ${debian_version}"
 
-            case "$variant" in
+            case "${variant}" in
 			    slim) tag="${debian_version}-slim" ;;
+                distroless) tag="${version}-${debian_version}-slim";;
 		    esac
 
-		template="$v/Dockerfile.template"
+            readarray -d '' templates < <(find ${v}/Dockerfile*.template -print0)
 
-		{ generated_warning; cat "$template"; } > "$dir/Dockerfile"
+            for template in "${templates[@]}"; do
+                echo "      template: ${template}"
 
-		sed -ri \
-            -e 's/^(ARG GPG_KEY=").*/\1'"${gpgKeys[$version]:-${gpgKeys[$rcVersion]}}"\"'/' \
-			-e 's/^(ENV PYTHON_VERSION=").*/\1'"$fullVersion"\"'/' \
-			-e 's/^(ENV PYTHON_RELEASE=").*/\1'"${fullVersion%%[a-z]*}"\"'/' \
-			-e 's/^(ENV PYTHON_PIP_VERSION=").*/\1'"$pipVersion"\"'/' \
-			-e 's!^(ARG PYTHON_GET_PIP_URL=").*!\1'"$getPipUrl"\"'!' \
-			-e 's!^(ARG PYTHON_GET_PIP_SHA256=").*!\1'"$getPipSha256"\"'!' \
-			-e 's/^(FROM python):.*/\1:'"$version-$tag"'/' \
-			-e 's!^(FROM (docker.io/debian|buildpack-deps|alpine|mcr[.]microsoft[.]com/[^:]+)):.*!\1:'"$tag"'!' \
-			"$dir/Dockerfile"
+                dockerfile="${dir}/Dockerfile"
 
-		major="${rcVersion%%.*}"
-		minor="${rcVersion#$major.}"
-		minor="${minor%%.*}"
+                if [[ $template =~ Dockerfile\-(.*)\.template ]]; then   
+                    dockerfile="${dir}/Dockerfile-${BASH_REMATCH[1]}";
+                fi
 
-		if [ "$minor" -ge 8 ]; then
-			# PROFILE_TASK has a reasonable default starting in 3.8+; see:
-			#   https://bugs.python.org/issue36044
-			#   https://github.com/python/cpython/pull/14702
-			#   https://github.com/python/cpython/pull/14910
-			perl -0 -i -p -e "s![^\n]+PROFILE_TASK(='[^']+?')?[^\n]+\n!!gs" "$dir/Dockerfile"
-		fi
-		if [ "$minor" -ge 9 ]; then
-			# "wininst-*.exe" is not installed for Unix platforms on Python 3.9+: https://github.com/python/cpython/pull/14511
-			sed -ri -e '/wininst/d' "$dir/Dockerfile"
-		fi
+                echo "      dockerfile: ${dockerfile}"
 
-		# https://www.python.org/dev/peps/pep-0615/
-		# https://mail.python.org/archives/list/python-dev@python.org/thread/PYXET7BHSETUJHSLFREM5TDZZXDTDTLY/
-		if [ "$minor" -lt 9 ]; then
-			sed -ri -e '/tzdata/d' "$dir/Dockerfile"
-		fi
+		        { generated_warning; cat "$template"; } > "${dockerfile}"
+
+		        sed -ri \
+                    -e 's/^(ARG GPG_KEY=").*/\1'"${gpgKeys[$version]:-${gpgKeys[$rcVersion]}}"\"'/' \
+			        -e 's/^(ENV PYTHON_VERSION=").*/\1'"$fullVersion"\"'/' \
+			        -e 's/^(ENV PYTHON_RELEASE=").*/\1'"${fullVersion%%[a-z]*}"\"'/' \
+			        -e 's/^(ENV PYTHON_PIP_VERSION=").*/\1'"$pipVersion"\"'/' \
+			        -e 's!^(ARG PYTHON_GET_PIP_URL=").*!\1'"$getPipUrl"\"'!' \
+			        -e 's!^(ARG PYTHON_GET_PIP_SHA256=").*!\1'"$getPipSha256"\"'!' \
+			        -e 's/^(FROM python):.*/\1:'"$version-$tag"'/' \
+			        -e 's!^(FROM (docker.io/debian|docker.io/westonsteimel/python)):.*!\1:'"$tag"'!' \
+			        "${dockerfile}"
+
+                major="${rcVersion%%.*}"
+		        minor="${rcVersion#$major.}"
+		        minor="${minor%%.*}"
+
+		        if [ "$minor" -ge 8 ]; then
+			        # PROFILE_TASK has a reasonable default starting in 3.8+; see:
+			        #   https://bugs.python.org/issue36044
+			        #   https://github.com/python/cpython/pull/14702
+			        #   https://github.com/python/cpython/pull/14910
+			        perl -0 -i -p -e "s![^\n]+PROFILE_TASK(='[^']+?')?[^\n]+\n!!gs" "${dockerfile}"
+		        fi
+		        if [ "$minor" -ge 9 ]; then
+			        # "wininst-*.exe" is not installed for Unix platforms on Python 3.9+: https://github.com/python/cpython/pull/14511
+			        sed -ri -e '/wininst/d' "${dockerfile}"
+		        fi
+
+		        # https://www.python.org/dev/peps/pep-0615/
+		        # https://mail.python.org/archives/list/python-dev@python.org/thread/PYXET7BHSETUJHSLFREM5TDZZXDTDTLY/
+		        if [ "$minor" -lt 9 ]; then
+			        sed -ri -e '/tzdata/d' "${dockerfile}"
+		        fi
+
+                if test -f "${v}/prepare-rootfs-${debian_version}.sh"; then
+                    cp "${v}/prepare-rootfs-${debian_version}.sh" "${dir}/prepare-rootfs.sh"
+                fi
+            done
         done
 	done
 done
