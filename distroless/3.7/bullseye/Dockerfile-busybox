@@ -5,6 +5,9 @@
 #
 FROM docker.io/westonsteimel/python:3.7-bullseye-slim
 
+ENV PYTHON_VERSION="3.7.9"
+ENV PYTHON_PIP_VERSION="20.3.3"
+
 ADD prepare-rootfs.sh /
 RUN ./prepare-rootfs.sh
 
@@ -12,7 +15,7 @@ FROM docker.io/busybox:glibc
 
 COPY --from=builder /build/rootfs/ /
 
-ENV PATH="/usr/local/bin"
-ENV LD_LIBRARY_PATH="/usr/local/lib/"
+ENV PATH="/usr/local/bin:${PATH}" \
+    LD_LIBRARY_PATH="/usr/local/lib/:${LD_LIBRARY_PATH}"
 
 CMD ["/usr/local/bin/python3"]
