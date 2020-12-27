@@ -3,7 +3,7 @@
 #
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
-FROM docker.io/debian:bullseye-slim
+FROM docker.io/library/debian:%%PLACEHOLDER%%
 
 # ensure local python is preferred over distribution python
 ENV PATH="/usr/local/bin:${PATH}"
