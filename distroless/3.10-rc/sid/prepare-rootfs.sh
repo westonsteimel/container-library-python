@@ -74,7 +74,8 @@ rm --recursive --force \
     /build/rootfs/usr/lib/libsemanage* \
     /build/rootfs/usr/lib/libtasn1* \
     /build/rootfs/usr/lib/libtic* \
-    /build/rootfs/usr/lib/perl* 
+    /build/rootfs/usr/lib/perl* \
+    /build/rootfs/usr/lib/gconv
 
 # We add all of this so that vulnerability scanners such as Trivy will work
 dpkg-query --status base-files > /build/rootfs/var/lib/dpkg/status.d/base
