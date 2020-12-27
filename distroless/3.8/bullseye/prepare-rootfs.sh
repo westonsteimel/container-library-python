@@ -77,6 +77,18 @@ rm --recursive --force \
     /build/rootfs/usr/lib/perl* \
     /build/rootfs/usr/lib/gconv
 
+# remove pip, idle, 2to3, etc
+python_sitepackages=$(python -c 'import site; print(site.getsitepackages()[0])')
+rm --recursive --force "/build/rootfs${python_sitepackages}/*" \
+    /build/rootfs/usr/local/lib/ensurepip
+    /build/rootfs/usr/local/bin/2to3* \
+    /build/rootfs/usr/local/bin/easy_install* \
+    /build/rootfs/usr/local/bin/idle* \
+    /build/rootfs/usr/local/bin/pip* \
+    /build/rootfs/usr/local/bin/pydoc* \
+    /build/rootfs/usr/local/bin/wheel*
+
+
 # We add all of this so that vulnerability scanners such as Trivy will work
 dpkg-query --status base-files > /build/rootfs/var/lib/dpkg/status.d/base
 dpkg-query --status ca-certificates > /build/rootfs/var/lib/dpkg/status.d/ca-certificates

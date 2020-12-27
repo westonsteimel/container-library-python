@@ -6,15 +6,6 @@ ENV PYTHON_PIP_VERSION="%%PLACEHOLDER%%"
 ADD prepare-rootfs.sh /
 RUN ./prepare-rootfs.sh
 
-RUN python_sitepackages=$(python -c 'import site; print(site.getsitepackages()[0])') \
-    && rm --recursive --force "/build/rootfs${python_sitepackages}/*" \
-        /build/rootfs/usr/local/bin/2to3* \
-        /build/rootfs/usr/local/bin/easy_install* \
-        /build/rootfs/usr/local/bin/idle* \
-        /build/rootfs/usr/local/bin/pip* \
-        /build/rootfs/usr/local/bin/pydoc* \
-        /build/rootfs/usr/local/bin/wheel*
-
 FROM scratch
 
 COPY --from=builder /build/rootfs/ /
