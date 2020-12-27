@@ -3,7 +3,7 @@
 #
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
-FROM docker.io/westonsteimel/python:3.7-buster-slim as builder
+FROM docker.io/westonsteimel/python:3.7-slim-buster as builder
 
 ENV PYTHON_VERSION="3.7.9" 
 ENV PYTHON_PIP_VERSION="20.3.3"

@@ -3,7 +3,7 @@
 #
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
-FROM docker.io/westonsteimel/python:3.9-sid-slim as builder
+FROM docker.io/westonsteimel/python:3.9-slim-sid as builder
 
 ENV PYTHON_VERSION="3.9.1" 
 ENV PYTHON_PIP_VERSION="20.3.3"

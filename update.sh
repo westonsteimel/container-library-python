@@ -165,7 +165,7 @@ for version in "${python_versions[@]}"; do
 
             case "${variant}" in
 			    slim) tag="${debian_version}-slim" ;;
-                distroless) tag="${version}-${debian_version}-slim";;
+                distroless) tag="${version}-slim-${debian_version}";;
 		    esac
 
             readarray -d '' templates < <(find ${v}/Dockerfile*.template -print0)
