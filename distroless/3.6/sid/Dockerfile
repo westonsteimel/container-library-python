@@ -3,9 +3,9 @@
 #
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
-FROM docker.io/westonsteimel/python:3.6-sid-slim
+FROM docker.io/westonsteimel/python:3.6-sid-slim as builder
 
-ENV PYTHON_VERSION="3.6.12"
+ENV PYTHON_VERSION="3.6.12" 
 ENV PYTHON_PIP_VERSION="20.3.3"
 
 ADD prepare-rootfs.sh /

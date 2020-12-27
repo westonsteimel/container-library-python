@@ -184,14 +184,14 @@ for version in "${python_versions[@]}"; do
 		        { generated_warning; cat "$template"; } > "${dockerfile}"
 
 		        sed -ri \
-                    -e 's/^(ARG GPG_KEY=").*/\1'"${gpgKeys[$version]:-${gpgKeys[$rcVersion]}}"\"'/' \
-			        -e 's/^(ENV PYTHON_VERSION=").*/\1'"$fullVersion"\"'/' \
-			        -e 's/^(ENV PYTHON_RELEASE=").*/\1'"${fullVersion%%[a-z]*}"\"'/' \
-			        -e 's/^(ENV PYTHON_PIP_VERSION=").*/\1'"$pipVersion"\"'/' \
-			        -e 's!^(ARG PYTHON_GET_PIP_URL=").*!\1'"$getPipUrl"\"'!' \
-			        -e 's!^(ARG PYTHON_GET_PIP_SHA256=").*!\1'"$getPipSha256"\"'!' \
-			        -e 's/^(FROM python):.*/\1:'"$version-$tag"'/' \
-			        -e 's!^(FROM (docker.io/debian|docker.io/westonsteimel/python)):.*!\1:'"$tag"'!' \
+                    -e 's/^(ARG GPG_KEY=")%%PLACEHOLDER%%/\1'"${gpgKeys[$version]:-${gpgKeys[$rcVersion]}}"'/' \
+			        -e 's/^(ENV PYTHON_VERSION=")%%PLACEHOLDER%%/\1'"$fullVersion"'/' \
+			        -e 's/^(ENV PYTHON_RELEASE=")%%PLACEHOLDER%%/\1'"${fullVersion%%[a-z]*}"'/' \
+			        -e 's/^(ENV PYTHON_PIP_VERSION=")%%PLACEHOLDER%%/\1'"$pipVersion"'/' \
+			        -e 's!^(ARG PYTHON_GET_PIP_URL=")%%PLACEHOLDER%%!\1'"$getPipUrl"'!' \
+			        -e 's!^(ARG PYTHON_GET_PIP_SHA256=")%%PLACEHOLDER%%!\1'"$getPipSha256"'!' \
+			        -e 's/^(FROM python):%%PLACEHOLDER%%/\1:'"$version-$tag"'/' \
+			        -e 's!^(FROM (docker.io/library/debian|docker.io/westonsteimel/python)):%%PLACEHOLDER%%!\1:'"$tag"'!' \
 			        "${dockerfile}"
 
                 major="${rcVersion%%.*}"
