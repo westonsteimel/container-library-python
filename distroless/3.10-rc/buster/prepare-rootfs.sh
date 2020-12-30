@@ -15,6 +15,9 @@ apt-get update && apt-get install -y --no-install-recommends \
 
 mkdir --parents \
     /build/rootfs \
+    /build/rootfs/tmp \
+    /build/rootfs/var \
+    /build/rootfs/bin \
     /build/rootfs/lib \
     /build/rootfs/usr/lib \
     /build/rootfs/usr/bin \
@@ -79,8 +82,9 @@ rm --recursive --force \
 
 # remove pip, idle, 2to3, etc
 python_sitepackages=$(python -c 'import site; print(site.getsitepackages()[0])')
-rm --recursive --force "/build/rootfs${python_sitepackages}/*" \
-    /build/rootfs/usr/local/lib/ensurepip
+rm --recursive --force \
+    /build/rootfs${python_sitepackages}/* \
+    /build/rootfs/usr/local/lib/ensurepip \
     /build/rootfs/usr/local/bin/2to3* \
     /build/rootfs/usr/local/bin/easy_install* \
     /build/rootfs/usr/local/bin/idle* \
@@ -88,6 +92,7 @@ rm --recursive --force "/build/rootfs${python_sitepackages}/*" \
     /build/rootfs/usr/local/bin/pydoc* \
     /build/rootfs/usr/local/bin/wheel*
 
+ln --symbolic --no-target-directory /lib /build/rootfs/lib64
 
 # We add all of this so that vulnerability scanners such as Trivy will work
 dpkg-query --status base-files > /build/rootfs/var/lib/dpkg/status.d/base

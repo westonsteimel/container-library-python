@@ -11,11 +11,22 @@ ENV PYTHON_PIP_VERSION="20.3.3"
 ADD prepare-rootfs.sh /
 RUN ./prepare-rootfs.sh
 
+FROM docker.io/library/busybox:glibc as add_nonroot_user
+
+RUN adduser -D python
+
 FROM scratch
 
 COPY --from=builder /build/rootfs/ /
+COPY --from=add_nonroot_user /etc/localtime /etc/localtime
+COPY --from=add_nonroot_user /etc/passwd /etc/passwd
+COPY --from=add_nonroot_user /etc/group /etc/group
+
+USER python
+WORKDIR /home/python
 
 ENV PATH="/usr/local/bin:${PATH}" \
-    LD_LIBRARY_PATH="/usr/local/lib/:${LD_LIBRARY_PATH}"
+    LD_LIBRARY_PATH="/usr/local/lib/:${LD_LIBRARY_PATH}" \
+    LANG="C.UTF-8"
 
 CMD ["/usr/local/bin/python3"]
