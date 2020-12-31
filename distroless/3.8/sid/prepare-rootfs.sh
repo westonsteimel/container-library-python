@@ -15,6 +15,9 @@ apt-get update && apt-get install -y --no-install-recommends \
 
 mkdir --parents \
     /build/rootfs \
+    /build/rootfs/tmp \
+    /build/rootfs/var \
+    /build/rootfs/bin \
     /build/rootfs/lib \
     /build/rootfs/usr/lib \
     /build/rootfs/usr/bin \
@@ -62,25 +65,34 @@ rm --recursive --force \
     /build/rootfs/usr/lib/libacl* \
     /build/rootfs/usr/lib/libapt* \
     /build/rootfs/usr/lib/libattr* \
+    /build/rootfs/usr/lib/libblkid* \
     /build/rootfs/usr/lib/libdebconf* \
+    /build/rootfs/usr/lib/libgcrypt* \
     /build/rootfs/usr/lib/libgdbm* \
     /build/rootfs/usr/lib/libgnutls* \
+    /build/rootfs/usr/lib/libgss* \
     /build/rootfs/usr/lib/libhogweed* \
     /build/rootfs/usr/lib/libidn* \
+    /build/rootfs/usr/lib/libkrb5* \
+    /build/rootfs/usr/lib/libk5* \
+    /build/rootfs/usr/lib/libmount* \
     /build/rootfs/usr/lib/libnettle* \
     /build/rootfs/usr/lib/libp11* \
     /build/rootfs/usr/lib/libpcre* \
     /build/rootfs/usr/lib/libseccomp* \
     /build/rootfs/usr/lib/libsemanage* \
+    /build/rootfs/usr/lib/libsmartcols* \
     /build/rootfs/usr/lib/libtasn1* \
     /build/rootfs/usr/lib/libtic* \
     /build/rootfs/usr/lib/perl* \
-    /build/rootfs/usr/lib/gconv
+    /build/rootfs/usr/lib/gconv \
+    /build/rootfs/usr/lib/krb5
 
 # remove pip, idle, 2to3, etc
 python_sitepackages=$(python -c 'import site; print(site.getsitepackages()[0])')
-rm --recursive --force "/build/rootfs${python_sitepackages}/*" \
-    /build/rootfs/usr/local/lib/ensurepip
+rm --recursive --force \
+    /build/rootfs${python_sitepackages}/* \
+    /build/rootfs/usr/local/lib/ensurepip \
     /build/rootfs/usr/local/bin/2to3* \
     /build/rootfs/usr/local/bin/easy_install* \
     /build/rootfs/usr/local/bin/idle* \
@@ -88,6 +100,7 @@ rm --recursive --force "/build/rootfs${python_sitepackages}/*" \
     /build/rootfs/usr/local/bin/pydoc* \
     /build/rootfs/usr/local/bin/wheel*
 
+ln --symbolic --no-target-directory /lib /build/rootfs/lib64
 
 # We add all of this so that vulnerability scanners such as Trivy will work
 dpkg-query --status base-files > /build/rootfs/var/lib/dpkg/status.d/base
@@ -97,14 +110,14 @@ dpkg-query --status libcom-err2 > /build/rootfs/var/lib/dpkg/status.d/libcom-err
 dpkg-query --status libbz2-1.0 > /build/rootfs/var/lib/dpkg/status.d/libbz2
 dpkg-query --status libdb5.3 > /build/rootfs/var/lib/dpkg/status.d/libdb5
 dpkg-query --status libexpat1 > /build/rootfs/var/lib/dpkg/status.d/libexpat1
-dpkg-query --status libffi6 > /build/rootfs/var/lib/dpkg/status.d/libffi6
-dpkg-query --status libgcc1 > /build/rootfs/var/lib/dpkg/status.d/libgcc1
+dpkg-query --status libffi7 > /build/rootfs/var/lib/dpkg/status.d/libffi7
+dpkg-query --status libgcc-s1 > /build/rootfs/var/lib/dpkg/status.d/libgcc-s1
 dpkg-query --status libgmp10 > /build/rootfs/var/lib/dpkg/status.d/libgmp10
 dpkg-query --status liblz4-1 > /build/rootfs/var/lib/dpkg/status.d/liblz4
 dpkg-query --status liblzma5 > /build/rootfs/var/lib/dpkg/status.d/liblzma5
 dpkg-query --status libmpdec2 > /build/rootfs/var/lib/dpkg/status.d/libmpdec2
 dpkg-query --status libncursesw6 > /build/rootfs/var/lib/dpkg/status.d/libncursesw6
-dpkg-query --status libreadline7 > /build/rootfs/var/lib/dpkg/status.d/libreadline7
+dpkg-query --status libreadline8 > /build/rootfs/var/lib/dpkg/status.d/libreadline8
 dpkg-query --status libsqlite3-0 > /build/rootfs/var/lib/dpkg/status.d/libsqlite3
 dpkg-query --status libss2 > /build/rootfs/var/lib/dpkg/status.d/libss2
 dpkg-query --status libssl1.1 > /build/rootfs/var/lib/dpkg/status.d/libssl1
