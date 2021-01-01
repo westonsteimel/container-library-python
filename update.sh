@@ -153,7 +153,7 @@ for version in "${python_versions[@]}"; do
 	echo "$version: $fullVersion"
 
 	for v in \
-		{slim,distroless} \
+		{slim,minimal} \
 	; do
         echo "  ${v}"
         for debian_version in "${debian_versions[@]}"; do
@@ -165,7 +165,7 @@ for version in "${python_versions[@]}"; do
 
             case "${variant}" in
 			    slim) tag="${debian_version}-slim" ;;
-                distroless) tag="${version}-slim-${debian_version}";;
+                minimal) tag="${version}-slim-${debian_version}";;
 		    esac
 
             readarray -d '' templates < <(find ${v}/Dockerfile*.template -print0)
