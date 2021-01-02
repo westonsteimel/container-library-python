@@ -11,7 +11,8 @@ apt-get purge -y --auto-remove dpkg-dev
 
 apt-get update && apt-get install -y --no-install-recommends \
     libmpdec2 \
-    tzdata 
+    tzdata \
+    ca-certificates
 
 mkdir --parents \
     /build/rootfs \
@@ -55,6 +56,7 @@ cp --recursive --archive /usr/local/lib/* /build/rootfs/usr/local/lib/
 cp --recursive --archive /usr/local/bin/* /build/rootfs/usr/local/bin/
 cp --recursive --archive /usr/local/include/* /build/rootfs/usr/local/include/
 cp --recursive --archive /usr/share/zoneinfo/* /build/rootfs/usr/share/zoneinfo/
+cp --recursive --archive /etc/ssl/certs/* /build/rootfs/etc/ssl/certs/
 cp --archive /usr/lib/os-release /build/rootfs/usr/lib/
 cp --archive /etc/debian_version /build/rootfs/etc/
 cp --archive /etc/os-release /build/rootfs/etc/
