@@ -11,16 +11,9 @@ ENV PYTHON_PIP_VERSION="20.3.3"
 ADD prepare-rootfs.sh /
 RUN ./prepare-rootfs.sh
 
-FROM docker.io/library/busybox:glibc as add_nonroot_user
-
-RUN adduser -D python
-
 FROM scratch
 
 COPY --from=builder /build/rootfs/ /
-COPY --from=add_nonroot_user /etc/localtime /etc/localtime
-COPY --from=add_nonroot_user /etc/passwd /etc/passwd
-COPY --from=add_nonroot_user /etc/group /etc/group
 
 USER python
 WORKDIR /home/python

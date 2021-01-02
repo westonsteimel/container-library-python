@@ -28,6 +28,27 @@ mkdir --parents \
     /build/rootfs/etc/ssl/certs \
     /build/rootfs/var/lib/dpkg/status.d
 
+cat > /build/rootfs/etc/group << EOF
+root:x:0:
+adm:x:4:
+tty:x:5:
+video:x:28:
+audio:x:29:
+nobody:x:65534:
+python:x:65532:
+EOF
+
+cat > /build/rootfs/etc/passwd << EOF
+root:x:0:0:root:/root:/sbin/nologin
+nobody:x:65534:65534:nobody:/nonexistent:/sbin/nologin
+python:x:65532:65532:python:/home/python:/bin/sh
+EOF
+
+cat > /build/rootfs/etc/localtime << EOF
+TZif2UTCTZif2øUTC
+UTC0
+EOF
+
 cp --recursive --archive /lib/${GNU_ARCH}/* /build/rootfs/lib/
 cp --recursive --archive /usr/lib/${GNU_ARCH}/* /build/rootfs/usr/lib/
 cp --recursive --archive /usr/local/lib/* /build/rootfs/usr/local/lib/
