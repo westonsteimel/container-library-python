@@ -3,17 +3,11 @@
 #
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
-FROM docker.io/westonsteimel/python:3.6-slim-buster as builder
-
-ENV PYTHON_VERSION="3.6.12"
-ENV PYTHON_PIP_VERSION="20.3.3"
-
-ADD prepare-rootfs.sh /
-RUN ./prepare-rootfs.sh
+FROM docker.io/westonsteimel/python:3.8-minimal-bullseye as builder
 
 FROM docker.io/library/busybox:glibc
 
-COPY --from=builder /build/rootfs/ /
+COPY --from=builder / /
 
 USER python
 WORKDIR /home/python

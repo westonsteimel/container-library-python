@@ -1,14 +1,8 @@
 FROM docker.io/westonsteimel/python:%%PLACEHOLDER%% as builder
 
-ENV PYTHON_VERSION="%%PLACEHOLDER%%"
-ENV PYTHON_PIP_VERSION="%%PLACEHOLDER%%"
-
-ADD prepare-rootfs.sh /
-RUN ./prepare-rootfs.sh
-
 FROM docker.io/library/busybox:glibc
 
-COPY --from=builder /build/rootfs/ /
+COPY --from=builder / /
 
 USER python
 WORKDIR /home/python
