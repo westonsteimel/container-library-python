@@ -1,3 +1,5 @@
+
+
 FROM docker.io/library/debian:%%PLACEHOLDER%%
 
 # ensure local python is preferred over distribution python
@@ -18,7 +20,8 @@ RUN set -eux; \
 	rm -rf /var/lib/apt/lists/*
 
 ARG GPG_KEY="%%PLACEHOLDER%%"
-ENV PYTHON_VERSION="%%PLACEHOLDER%%"
+ARG PYTHON_VERSION="%%PLACEHOLDER%%"
+ENV PYTHON_VERSION="${PYTHON_VERSION}"
 
 RUN set -ex \
 	\
@@ -140,7 +143,8 @@ RUN cd /usr/local/bin \
 	&& ln -s python3-config python-config
 
 # if this is called "PIP_VERSION", pip explodes with "ValueError: invalid truth value '<VERSION>'"
-ENV PYTHON_PIP_VERSION="%%PLACEHOLDER%%"
+ARG PYTHON_PIP_VERSION="%%PLACEHOLDER%%"
+ENV PYTHON_PIP_VERSION="${PYTHON_PIP_VERSION}"
 # https://github.com/pypa/get-pip
 ARG PYTHON_GET_PIP_URL="%%PLACEHOLDER%%"
 ARG PYTHON_GET_PIP_SHA256="%%PLACEHOLDER%%"

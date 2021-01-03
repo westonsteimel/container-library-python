@@ -186,9 +186,9 @@ for version in "${python_versions[@]}"; do
 
 		        sed -ri \
                     -e 's/^(ARG GPG_KEY=")%%PLACEHOLDER%%/\1'"${gpgKeys[$version]:-${gpgKeys[$rcVersion]}}"'/' \
-			        -e 's/^(ENV PYTHON_VERSION=")%%PLACEHOLDER%%/\1'"$fullVersion"'/' \
+			        -e 's/^(ARG PYTHON_VERSION=")%%PLACEHOLDER%%/\1'"$fullVersion"'/' \
 			        -e 's/^(ENV PYTHON_RELEASE=")%%PLACEHOLDER%%/\1'"${fullVersion%%[a-z]*}"'/' \
-			        -e 's/^(ENV PYTHON_PIP_VERSION=")%%PLACEHOLDER%%/\1'"$pipVersion"'/' \
+			        -e 's/^(ARG PYTHON_PIP_VERSION=")%%PLACEHOLDER%%/\1'"$pipVersion"'/' \
 			        -e 's!^(ARG PYTHON_GET_PIP_URL=")%%PLACEHOLDER%%!\1'"$getPipUrl"'!' \
 			        -e 's!^(ARG PYTHON_GET_PIP_SHA256=")%%PLACEHOLDER%%!\1'"$getPipSha256"'!' \
 			        -e 's/^(FROM python):%%PLACEHOLDER%%/\1:'"$version-$tag"'/' \

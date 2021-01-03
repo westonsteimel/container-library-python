@@ -5,9 +5,6 @@
 #
 FROM docker.io/westonsteimel/python:3.9-slim-sid as builder
 
-ENV PYTHON_VERSION="3.9.1" 
-ENV PYTHON_PIP_VERSION="20.3.3"
-
 ADD prepare-rootfs.sh /
 RUN ./prepare-rootfs.sh
 
@@ -18,8 +15,10 @@ COPY --from=builder /build/rootfs/ /
 USER python
 WORKDIR /home/python
 
+ARG PYTHON_VERSION="3.9.1"
 ENV PATH="/usr/local/bin:${PATH}" \
     LD_LIBRARY_PATH="/usr/local/lib/:${LD_LIBRARY_PATH}" \
-    LANG="C.UTF-8"
+    LANG="C.UTF-8" \
+    PYTHON_VERSION="${PYTHON_VERSION}"
 
 CMD ["/usr/local/bin/python3"]

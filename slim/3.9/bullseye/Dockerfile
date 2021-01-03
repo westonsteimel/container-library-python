@@ -3,6 +3,8 @@
 #
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
+
+
 FROM docker.io/library/debian:bullseye-slim
 
 # ensure local python is preferred over distribution python
@@ -23,7 +25,8 @@ RUN set -eux; \
 	rm -rf /var/lib/apt/lists/*
 
 ARG GPG_KEY="E3FF2839C048B25C084DEBE9B26995E310250568"
-ENV PYTHON_VERSION="3.9.1"
+ARG PYTHON_VERSION="3.9.1"
+ENV PYTHON_VERSION="${PYTHON_VERSION}"
 
 RUN set -ex \
 	\
@@ -108,7 +111,8 @@ RUN cd /usr/local/bin \
 	&& ln -s python3-config python-config
 
 # if this is called "PIP_VERSION", pip explodes with "ValueError: invalid truth value '<VERSION>'"
-ENV PYTHON_PIP_VERSION="20.3.3"
+ARG PYTHON_PIP_VERSION="20.3.3"
+ENV PYTHON_PIP_VERSION="${PYTHON_PIP_VERSION}"
 # https://github.com/pypa/get-pip
 ARG PYTHON_GET_PIP_URL="https://github.com/pypa/get-pip/raw/5f38681f7f5872e4032860b54e9cc11cf0374932/get-pip.py"
 ARG PYTHON_GET_PIP_SHA256="6a0b13826862f33c13b614a921d36253bfa1ae779c5fbf569876f3585057e9d2"
