@@ -21,6 +21,7 @@ mkdir --parents \
     /build/rootfs/bin \
     /build/rootfs/lib \
     /build/rootfs/usr/lib \
+    /build/rootfs/usr/lib/engines-1.1 \
     /build/rootfs/usr/bin \
     /build/rootfs/usr/local/lib \
     /build/rootfs/usr/local/bin \
@@ -50,66 +51,183 @@ TZif2UTCTZif2øUTC
 UTC0
 EOF
 
-cp --recursive --archive /lib/${GNU_ARCH}/* /build/rootfs/lib/
-cp --recursive --archive /usr/lib/${GNU_ARCH}/* /build/rootfs/usr/lib/
-cp --recursive --archive /usr/local/lib/* /build/rootfs/usr/local/lib/
-cp --recursive --archive /usr/local/bin/* /build/rootfs/usr/local/bin/
-cp --recursive --archive /usr/local/include/* /build/rootfs/usr/local/include/
-cp --recursive --archive /usr/share/zoneinfo/* /build/rootfs/usr/share/zoneinfo/
-cp --recursive --archive /etc/ssl/certs/* /build/rootfs/etc/ssl/certs/
+# base-files
+apt-get install -y --no-install-recommends base-files
 cp --archive /usr/lib/os-release /build/rootfs/usr/lib/
 cp --archive /etc/debian_version /build/rootfs/etc/
 cp --archive /etc/os-release /build/rootfs/etc/
+dpkg-query --status base-files > /build/rootfs/var/lib/dpkg/status.d/base-files
+
+# ca-certificates
+apt-get install -y --no-install-recommends ca-certificates
+cp --recursive --archive /etc/ssl/certs/* /build/rootfs/etc/ssl/certs/
+dpkg-query --status ca-certificates > /build/rootfs/var/lib/dpkg/status.d/ca-certificates
+
+# libc6
+apt-get install -y --no-install-recommends libc6
+cp --archive /lib/${GNU_ARCH}/ld-* /build/rootfs/lib/
+cp --archive /lib/${GNU_ARCH}/libBrokenLocale-* /build/rootfs/lib/
+cp --archive /lib/${GNU_ARCH}/libBrokenLocale.* /build/rootfs/lib/
+cp --archive /lib/${GNU_ARCH}/libSegFault.so /build/rootfs/lib/
+cp --archive /lib/${GNU_ARCH}/libanl-* /build/rootfs/lib/
+cp --archive /lib/${GNU_ARCH}/libanl.* /build/rootfs/lib/
+cp --archive /lib/${GNU_ARCH}/libc-* /build/rootfs/lib/
+cp --archive /lib/${GNU_ARCH}/libc.* /build/rootfs/lib/
+cp --archive /lib/${GNU_ARCH}/libdl-* /build/rootfs/lib/
+cp --archive /lib/${GNU_ARCH}/libdl.* /build/rootfs/lib/
+cp --archive /lib/${GNU_ARCH}/libm-* /build/rootfs/lib/
+cp --archive /lib/${GNU_ARCH}/libm.* /build/rootfs/lib/
+cp --archive /lib/${GNU_ARCH}/libmemusage.* /build/rootfs/lib/
+cp --archive /lib/${GNU_ARCH}/libmvec-* /build/rootfs/lib/
+cp --archive /lib/${GNU_ARCH}/libmvec.* /build/rootfs/lib/
+cp --archive /lib/${GNU_ARCH}/libnsl-* /build/rootfs/lib/
+cp --archive /lib/${GNU_ARCH}/libnsl.* /build/rootfs/lib/
+cp --archive /lib/${GNU_ARCH}/libnss_* /build/rootfs/lib/
+cp --archive /lib/${GNU_ARCH}/libpcprofile.* /build/rootfs/lib/
+cp --archive /lib/${GNU_ARCH}/libpthread-* /build/rootfs/lib/
+cp --archive /lib/${GNU_ARCH}/libpthread.* /build/rootfs/lib/
+cp --archive /lib/${GNU_ARCH}/libresolv-* /build/rootfs/lib/
+cp --archive /lib/${GNU_ARCH}/libresolv.* /build/rootfs/lib/
+cp --archive /lib/${GNU_ARCH}/librt-* /build/rootfs/lib/
+cp --archive /lib/${GNU_ARCH}/librt.* /build/rootfs/lib/
+cp --archive /lib/${GNU_ARCH}/libthread_db-* /build/rootfs/lib/
+cp --archive /lib/${GNU_ARCH}/libthread_db.* /build/rootfs/lib/
+cp --archive /lib/${GNU_ARCH}/libutil-* /build/rootfs/lib/
+cp --archive /lib/${GNU_ARCH}/libutil.* /build/rootfs/lib/
+# not currently including the following:
+# /usr/lib/${GNU_ARCH}/audit/
+# /usr/lib/${GNU_ARCH}/gconv/
+dpkg-query --status libc6 > /build/rootfs/var/lib/dpkg/status.d/libc
+
+# libcom-err2
+apt-get install -y --no-install-recommends libcom-err2
+cp --archive /lib/${GNU_ARCH}/libcom_err.so.* /build/rootfs/lib/
+dpkg-query --status libcom-err2 > /build/rootfs/var/lib/dpkg/status.d/libcom-err2
+
+# libbz2-1.0
+apt-get install -y --no-install-recommends libbz2-1.0
+cp --archive /lib/${GNU_ARCH}/libbz2.so.* /build/rootfs/lib/
+dpkg-query --status libbz2-1.0 > /build/rootfs/var/lib/dpkg/status.d/libbz2
+
+# libdb5.3
+apt-get install -y --no-install-recommends libdb5.3
+cp --archive /usr/lib/${GNU_ARCH}/libdb-* /build/rootfs/usr/lib/
+dpkg-query --status libdb5.3 > /build/rootfs/var/lib/dpkg/status.d/libdb5
+
+# libexpat1
+apt-get install -y --no-install-recommends libexpat1
+cp --archive /lib/${GNU_ARCH}/libexpat.so.* /build/rootfs/lib/
+cp --archive /usr/lib/${GNU_ARCH}/libexpatw.so.* /build/rootfs/usr/lib/
+dpkg-query --status libexpat1 > /build/rootfs/var/lib/dpkg/status.d/libexpat1
+
+# libffi7
+apt-get install -y --no-install-recommends libffi7
+cp --archive /usr/lib/${GNU_ARCH}/libffi.so.* /build/rootfs/usr/lib/
+dpkg-query --status libffi7 > /build/rootfs/var/lib/dpkg/status.d/libffi7
+
+# libgcc-s1
+apt-get install -y --no-install-recommends libgcc-s1
+cp --archive /lib/${GNU_ARCH}/libgcc_s.so.* /build/rootfs/lib/
+dpkg-query --status libgcc-s1 > /build/rootfs/var/lib/dpkg/status.d/libgcc-s1
+
+# libgmp10
+apt-get install -y --no-install-recommends libgmp10
+cp --archive /usr/lib/${GNU_ARCH}/libgmp.so.* /build/rootfs/usr/lib/
+dpkg-query --status libgmp10 > /build/rootfs/var/lib/dpkg/status.d/libgmp10
+
+# liblz4
+apt-get install -y --no-install-recommends liblz4-1
+cp --archive /usr/lib/${GNU_ARCH}/liblz4.so.* /build/rootfs/usr/lib/
+dpkg-query --status liblz4-1 > /build/rootfs/var/lib/dpkg/status.d/liblz4
+
+# liblzma5
+apt-get install -y --no-install-recommends liblzma5
+cp --archive /lib/${GNU_ARCH}/liblzma.so.* /build/rootfs/lib/
+dpkg-query --status liblzma5 > /build/rootfs/var/lib/dpkg/status.d/liblzma5
+
+# libmpdec2
+apt-get install -y --no-install-recommends libmpdec2
+cp --archive /usr/lib/${GNU_ARCH}/libmpdec.so.* /build/rootfs/usr/lib/
+dpkg-query --status libmpdec2 > /build/rootfs/var/lib/dpkg/status.d/libmpdec2
+
+# libncursesw6
+apt-get install -y --no-install-recommends libncursesw6
+cp --archive /lib/${GNU_ARCH}/libncursesw.so.* /build/rootfs/lib/
+cp --archive /usr/lib/${GNU_ARCH}/libformw.so.* /build/rootfs/usr/lib/
+cp --archive /usr/lib/${GNU_ARCH}/libmenuw.so.* /build/rootfs/usr/lib/
+cp --archive /usr/lib/${GNU_ARCH}/libpanelw.so.* /build/rootfs/usr/lib/
+dpkg-query --status libncursesw6 > /build/rootfs/var/lib/dpkg/status.d/libncursesw6
+
+# libreadline8
+apt-get install -y --no-install-recommends libreadline8
+cp --archive /lib/${GNU_ARCH}/libhistory.so.* /build/rootfs/lib/
+cp --archive /lib/${GNU_ARCH}/libreadline.so.* /build/rootfs/lib/
+dpkg-query --status libreadline8 > /build/rootfs/var/lib/dpkg/status.d/libreadline8
+
+# libsqlite3-0
+apt-get install -y --no-install-recommends libsqlite3-0
+cp --archive /usr/lib/${GNU_ARCH}/libsqlite3.so.* /build/rootfs/usr/lib/
+dpkg-query --status libsqlite3-0 > /build/rootfs/var/lib/dpkg/status.d/libsqlite3
+
+# libss2
+apt-get install -y --no-install-recommends libss2
+cp --archive /lib/${GNU_ARCH}/libss.so.* /build/rootfs/lib/
+dpkg-query --status libss2 > /build/rootfs/var/lib/dpkg/status.d/libss2
+
+# libssl1.1
+apt-get install -y --no-install-recommends libssl1.1
+cp --archive /usr/lib/${GNU_ARCH}/libcrypto.so.* /build/rootfs/usr/lib/
+cp --archive /usr/lib/${GNU_ARCH}/libssl.so.* /build/rootfs/usr/lib/
+cp --recursive --archive /usr/lib/${GNU_ARCH}/engines-1.1/* /build/rootfs/usr/lib/engines-1.1/
+dpkg-query --status libssl1.1 > /build/rootfs/var/lib/dpkg/status.d/libssl1
+
+# libstdc++6
+apt-get install -y --no-install-recommends libstdc++6
+cp --archive /usr/lib/${GNU_ARCH}/libstdc++.so.* /build/rootfs/usr/lib/
+dpkg-query --status libstdc++6 > /build/rootfs/var/lib/dpkg/status.d/libstdc
+
+# libtinfo6
+apt-get install -y --no-install-recommends libtinfo6
+cp --archive /lib/${GNU_ARCH}/libtinfo.so.* /build/rootfs/lib/
+cp --archive /usr/lib/${GNU_ARCH}/libtic.so.* /build/rootfs/usr/lib/
+dpkg-query --status libtinfo6 > /build/rootfs/var/lib/dpkg/status.d/libtinfo6
+
+# libunistring2
+apt-get install -y --no-install-recommends libunistring2
+cp --archive /usr/lib/${GNU_ARCH}/libunistring.so.* /build/rootfs/usr/lib/
+dpkg-query --status libunistring2 > /build/rootfs/var/lib/dpkg/status.d/libunistring2
+
+# libuuid1
+apt-get install -y --no-install-recommends libuuid1
+cp --archive /usr/lib/${GNU_ARCH}/libuuid.so.* /build/rootfs/usr/lib/
+dpkg-query --status libuuid1 > /build/rootfs/var/lib/dpkg/status.d/libuuid1
+
+# libzstd1
+apt-get install -y --no-install-recommends libzstd1
+cp --archive /usr/lib/${GNU_ARCH}/libzstd.so.* /build/rootfs/usr/lib/
+dpkg-query --status libzstd1 > /build/rootfs/var/lib/dpkg/status.d/libzstd1
+
+# netbase
+apt-get install -y --no-install-recommends netbase
 cp --archive /etc/protocols /build/rootfs/etc/
 cp --archive /etc/rpc /build/rootfs/etc/
 cp --archive /etc/services /build/rootfs/etc/
+dpkg-query --status netbase > /build/rootfs/var/lib/dpkg/status.d/netbase
 
-rm --recursive --force \
-    /build/rootfs/lib/libaudit* \
-    /build/rootfs/lib/libblkid* \
-    /build/rootfs/lib/libcap* \
-    /build/rootfs/lib/libe2p* \
-    /build/rootfs/lib/libext2fs* \
-    /build/rootfs/lib/libaudit* \
-    /build/rootfs/lib/libfdisk* \
-    /build/rootfs/lib/libgcrypt* \
-    /build/rootfs/lib/libgpg* \
-    /build/rootfs/lib/libmount* \
-    /build/rootfs/lib/libpam* \
-    /build/rootfs/lib/libpcre* \
-    /build/rootfs/lib/libselinux* \
-    /build/rootfs/lib/libsepol* \
-    /build/rootfs/lib/libsmartcols* \
-    /build/rootfs/lib/libsystemd* \
-    /build/rootfs/lib/libudev* \
-    /build/rootfs/lib/security
+# tzdata
+apt-get install -y --no-install-recommends tzdata
+cp --recursive --archive /usr/share/zoneinfo/* /build/rootfs/usr/share/zoneinfo/
+dpkg-query --status tzdata > /build/rootfs/var/lib/dpkg/status.d/tzdata
 
-rm --recursive --force \
-    /build/rootfs/usr/lib/libacl* \
-    /build/rootfs/usr/lib/libapt* \
-    /build/rootfs/usr/lib/libattr* \
-    /build/rootfs/usr/lib/libblkid* \
-    /build/rootfs/usr/lib/libdebconf* \
-    /build/rootfs/usr/lib/libgcrypt* \
-    /build/rootfs/usr/lib/libgdbm* \
-    /build/rootfs/usr/lib/libgnutls* \
-    /build/rootfs/usr/lib/libgss* \
-    /build/rootfs/usr/lib/libhogweed* \
-    /build/rootfs/usr/lib/libidn* \
-    /build/rootfs/usr/lib/libkrb5* \
-    /build/rootfs/usr/lib/libk5* \
-    /build/rootfs/usr/lib/libmount* \
-    /build/rootfs/usr/lib/libnettle* \
-    /build/rootfs/usr/lib/libp11* \
-    /build/rootfs/usr/lib/libpcre* \
-    /build/rootfs/usr/lib/libseccomp* \
-    /build/rootfs/usr/lib/libsemanage* \
-    /build/rootfs/usr/lib/libsmartcols* \
-    /build/rootfs/usr/lib/libtasn1* \
-    /build/rootfs/usr/lib/libtic* \
-    /build/rootfs/usr/lib/perl* \
-    /build/rootfs/usr/lib/gconv \
-    /build/rootfs/usr/lib/krb5
+# zlib1g
+apt-get install -y --no-install-recommends zlib1g
+cp --archive /lib/${GNU_ARCH}/libz.so.* /build/rootfs/lib/
+dpkg-query --status zlib1g > /build/rootfs/var/lib/dpkg/status.d/zlib1g
+
+# should just be python stuff att /usr/local paths so copy it all and then remove the stuff we don't want to carry over
+cp --recursive --archive /usr/local/lib/* /build/rootfs/usr/local/lib/
+cp --recursive --archive /usr/local/bin/* /build/rootfs/usr/local/bin/
+cp --recursive --archive /usr/local/include/* /build/rootfs/usr/local/include/
 
 # remove pip, idle, 2to3, etc
 python_sitepackages=$(python -c 'import site; print(site.getsitepackages()[0])')
@@ -124,32 +242,4 @@ rm --recursive --force \
     /build/rootfs/usr/local/bin/wheel*
 
 ln --symbolic --no-target-directory /lib /build/rootfs/lib64
-
-# We add all of this so that vulnerability scanners such as Trivy will work
-dpkg-query --status base-files > /build/rootfs/var/lib/dpkg/status.d/base
-dpkg-query --status ca-certificates > /build/rootfs/var/lib/dpkg/status.d/ca-certificates
-dpkg-query --status libc6 > /build/rootfs/var/lib/dpkg/status.d/libc
-dpkg-query --status libcom-err2 > /build/rootfs/var/lib/dpkg/status.d/libcom-err2
-dpkg-query --status libbz2-1.0 > /build/rootfs/var/lib/dpkg/status.d/libbz2
-dpkg-query --status libdb5.3 > /build/rootfs/var/lib/dpkg/status.d/libdb5
-dpkg-query --status libexpat1 > /build/rootfs/var/lib/dpkg/status.d/libexpat1
-dpkg-query --status libffi7 > /build/rootfs/var/lib/dpkg/status.d/libffi7
-dpkg-query --status libgcc-s1 > /build/rootfs/var/lib/dpkg/status.d/libgcc-s1
-dpkg-query --status libgmp10 > /build/rootfs/var/lib/dpkg/status.d/libgmp10
-dpkg-query --status liblz4-1 > /build/rootfs/var/lib/dpkg/status.d/liblz4
-dpkg-query --status liblzma5 > /build/rootfs/var/lib/dpkg/status.d/liblzma5
-dpkg-query --status libmpdec2 > /build/rootfs/var/lib/dpkg/status.d/libmpdec2
-dpkg-query --status libncursesw6 > /build/rootfs/var/lib/dpkg/status.d/libncursesw6
-dpkg-query --status libreadline8 > /build/rootfs/var/lib/dpkg/status.d/libreadline8
-dpkg-query --status libsqlite3-0 > /build/rootfs/var/lib/dpkg/status.d/libsqlite3
-dpkg-query --status libss2 > /build/rootfs/var/lib/dpkg/status.d/libss2
-dpkg-query --status libssl1.1 > /build/rootfs/var/lib/dpkg/status.d/libssl1
-dpkg-query --status libstdc++6 > /build/rootfs/var/lib/dpkg/status.d/libstdc
-dpkg-query --status libtinfo6 > /build/rootfs/var/lib/dpkg/status.d/libtinfo6
-dpkg-query --status libunistring2 > /build/rootfs/var/lib/dpkg/status.d/libunistring2
-dpkg-query --status libuuid1 > /build/rootfs/var/lib/dpkg/status.d/libuuid1
-dpkg-query --status libzstd1 > /build/rootfs/var/lib/dpkg/status.d/libzstd1
-dpkg-query --status netbase > /build/rootfs/var/lib/dpkg/status.d/netbase
-dpkg-query --status tzdata > /build/rootfs/var/lib/dpkg/status.d/tzdata
-dpkg-query --status zlib1g > /build/rootfs/var/lib/dpkg/status.d/zlib1g
 
