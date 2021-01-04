@@ -23,7 +23,7 @@ mkdir --parents \
     /build/rootfs/usr/local/include \
     /build/rootfs/usr/share/zoneinfo \
     /build/rootfs/etc/ssl/certs \
-    /build/rootfs/var/lib/dpkg/status.d
+    /build/rootfs/var/lib/dpkg
 
 # We store all of the apt package info at /var/lib/dpkg/status and create a blank file /var/lib/dpkg/available so that 
 # vulnerability scanners such as trivy and clair will work
