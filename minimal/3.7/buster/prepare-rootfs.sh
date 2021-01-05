@@ -252,9 +252,14 @@ cp --recursive --archive /usr/local/include/* /build/rootfs/usr/local/include/
 
 # remove pip, idle, 2to3, etc
 python_sitepackages=$(python -c 'import site; print(site.getsitepackages()[0])')
+python_major_minor_version=$(python -c 'import sys; print(f"python{sys.version_info.major}.{sys.version_info.minor}")')
 rm --recursive --force \
     /build/rootfs${python_sitepackages}/* \
-    /build/rootfs/usr/local/lib/ensurepip \
+    /build/rootfs/usr/local/lib/${python_major_minor_version}/ensurepip \
+    /build/rootfs/usr/local/lib/${python_major_minor_version}/idlelib \
+    /build/rootfs/usr/local/lib/${python_major_minor_version}/lib2to3 \
+    /build/rootfs/usr/local/lib/${python_major_minor_version}/turtledemo \
+    /build/rootfs/usr/local/lib/${python_major_minor_version}/tkinter \
     /build/rootfs/usr/local/bin/2to3* \
     /build/rootfs/usr/local/bin/easy_install* \
     /build/rootfs/usr/local/bin/idle* \
