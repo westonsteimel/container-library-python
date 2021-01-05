@@ -163,12 +163,6 @@ cp --archive /lib/${GNU_ARCH}/liblzma.so.* /build/rootfs/lib/
 dpkg-query --status liblzma5 >> /build/rootfs/var/lib/dpkg/status
 printf '\n' >> /build/rootfs/var/lib/dpkg/status
 
-# libmpdec2
-apt-get install -y --no-install-recommends libmpdec2
-cp --archive /usr/lib/${GNU_ARCH}/libmpdec.so.* /build/rootfs/usr/lib/
-dpkg-query --status libmpdec2 >> /build/rootfs/var/lib/dpkg/status
-printf '\n' >> /build/rootfs/var/lib/dpkg/status
-
 # libncursesw6
 apt-get install -y --no-install-recommends libncursesw6
 cp --archive /lib/${GNU_ARCH}/libncursesw.so.* /build/rootfs/lib/
