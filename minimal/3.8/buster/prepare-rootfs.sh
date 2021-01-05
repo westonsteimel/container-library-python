@@ -115,12 +115,6 @@ cp --archive /lib/${GNU_ARCH}/libbz2.so.* /build/rootfs/lib/
 dpkg-query --status libbz2-1.0 >> /build/rootfs/var/lib/dpkg/status
 printf '\n' >> /build/rootfs/var/lib/dpkg/status
 
-# libdb5.3
-apt-get install -y --no-install-recommends libdb5.3
-cp --archive /usr/lib/${GNU_ARCH}/libdb-* /build/rootfs/usr/lib/
-dpkg-query --status libdb5.3 >> /build/rootfs/var/lib/dpkg/status
-printf '\n' >> /build/rootfs/var/lib/dpkg/status
-
 # libexpat1
 apt-get install -y --no-install-recommends libexpat1
 cp --archive /lib/${GNU_ARCH}/libexpat.so.* /build/rootfs/lib/
@@ -134,10 +128,10 @@ cp --archive /usr/lib/${GNU_ARCH}/libffi.so.* /build/rootfs/usr/lib/
 dpkg-query --status libffi6 >> /build/rootfs/var/lib/dpkg/status
 printf '\n' >> /build/rootfs/var/lib/dpkg/status
 
-# libgcc1
-apt-get install -y --no-install-recommends libgcc1
-cp --archive /lib/${GNU_ARCH}/libgcc_s.so.* /build/rootfs/lib/
-dpkg-query --status libgcc1 >> /build/rootfs/var/lib/dpkg/status
+# libgdbm6
+apt-get install -y --no-install-recommends libgdbm6
+cp --archive /usr/lib/${GNU_ARCH}/libgdbm.so.* /build/rootfs/usr/lib/
+dpkg-query --status libgdbm6 >> /build/rootfs/var/lib/dpkg/status
 printf '\n' >> /build/rootfs/var/lib/dpkg/status
 
 # libgmp10
@@ -205,12 +199,6 @@ apt-get install -y --no-install-recommends libtinfo6
 cp --archive /lib/${GNU_ARCH}/libtinfo.so.* /build/rootfs/lib/
 cp --archive /usr/lib/${GNU_ARCH}/libtic.so.* /build/rootfs/usr/lib/
 dpkg-query --status libtinfo6 >> /build/rootfs/var/lib/dpkg/status
-printf '\n' >> /build/rootfs/var/lib/dpkg/status
-
-# libunistring2
-apt-get install -y --no-install-recommends libunistring2
-cp --archive /usr/lib/${GNU_ARCH}/libunistring.so.* /build/rootfs/usr/lib/
-dpkg-query --status libunistring2 >> /build/rootfs/var/lib/dpkg/status
 printf '\n' >> /build/rootfs/var/lib/dpkg/status
 
 # libuuid1
