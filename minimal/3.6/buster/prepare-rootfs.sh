@@ -68,35 +68,7 @@ printf '\n' >> /build/rootfs/var/lib/dpkg/status
 
 # libc6
 apt-get install -y --no-install-recommends libc6
-cp --archive /lib/${GNU_ARCH}/ld-* /build/rootfs/lib/
-cp --archive /lib/${GNU_ARCH}/libBrokenLocale-* /build/rootfs/lib/
-cp --archive /lib/${GNU_ARCH}/libBrokenLocale.* /build/rootfs/lib/
-cp --archive /lib/${GNU_ARCH}/libSegFault.so /build/rootfs/lib/
-cp --archive /lib/${GNU_ARCH}/libanl-* /build/rootfs/lib/
-cp --archive /lib/${GNU_ARCH}/libanl.* /build/rootfs/lib/
-cp --archive /lib/${GNU_ARCH}/libc-* /build/rootfs/lib/
-cp --archive /lib/${GNU_ARCH}/libc.* /build/rootfs/lib/
-cp --archive /lib/${GNU_ARCH}/libcrypt-* /build/rootfs/lib/
-cp --archive /lib/${GNU_ARCH}/libcrypt.* /build/rootfs/lib/
-cp --archive /lib/${GNU_ARCH}/libdl-* /build/rootfs/lib/
-cp --archive /lib/${GNU_ARCH}/libdl.* /build/rootfs/lib/
-cp --archive /lib/${GNU_ARCH}/libm-* /build/rootfs/lib/
-cp --archive /lib/${GNU_ARCH}/libm.* /build/rootfs/lib/
-cp --archive /lib/${GNU_ARCH}/libmemusage.* /build/rootfs/lib/
-cp --archive /lib/${GNU_ARCH}/libmvec-* /build/rootfs/lib/
-cp --archive /lib/${GNU_ARCH}/libmvec.* /build/rootfs/lib/
-cp --archive /lib/${GNU_ARCH}/libnsl-* /build/rootfs/lib/
-cp --archive /lib/${GNU_ARCH}/libnsl.* /build/rootfs/lib/
-cp --archive /lib/${GNU_ARCH}/libnss_* /build/rootfs/lib/
-cp --archive /lib/${GNU_ARCH}/libpcprofile.* /build/rootfs/lib/
-cp --archive /lib/${GNU_ARCH}/libpthread-* /build/rootfs/lib/
-cp --archive /lib/${GNU_ARCH}/libpthread.* /build/rootfs/lib/
-cp --archive /lib/${GNU_ARCH}/libresolv-* /build/rootfs/lib/
-cp --archive /lib/${GNU_ARCH}/libresolv.* /build/rootfs/lib/
-cp --archive /lib/${GNU_ARCH}/libthread_db-* /build/rootfs/lib/
-cp --archive /lib/${GNU_ARCH}/libthread_db.* /build/rootfs/lib/
-cp --archive /lib/${GNU_ARCH}/libutil-* /build/rootfs/lib/
-cp --archive /lib/${GNU_ARCH}/libutil.* /build/rootfs/lib/
+dpkg-query --listfiles libc6 | grep -E "^\/lib\/.*\.so*" | xargs -r -I {} cp --archive {} /build/rootfs/lib/
 # not currently including the following:
 # /usr/lib/${GNU_ARCH}/audit/
 # /usr/lib/${GNU_ARCH}/gconv/
