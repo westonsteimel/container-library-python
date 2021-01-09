@@ -52,11 +52,11 @@ cd "$(dirname "$(readlink -f "$BASH_SOURCE")")"
 
 python_versions=( "$@" )
 if [ ${#python_versions[@]} -eq 0 ]; then
-	python_versions=( "3.6" "3.7" "3.8" "3.9" "3.10-rc" )
+    mapfile -t python_versions < PYTHON_VERSIONS
 fi
 python_versions=( "${python_versions[@]%/}" )
 
-debian_versions=( "buster" "bullseye" "sid" )
+mapfile -t debian_versions < DEBIAN_VERSIONS
 
 pipVersion="$(curl -fsSL 'https://pypi.org/pypi/pip/json' | jq -r .info.version)"
 getPipCommit="$(curl -fsSL 'https://github.com/pypa/get-pip/commits/master/get-pip.py.atom' | tac|tac | awk -F '[[:space:]]*[<>/]+' '$2 == "id" && $3 ~ /Commit/ { print $4; exit }')"
