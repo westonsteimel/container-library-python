@@ -1,0 +1,29 @@
+on: 
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: '0 1 * * *'
+name: Build and publish
+env:
+  DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+  DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+  GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
+jobs:
+  build_and_publish:
+    name: Build and Publish
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@main
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - 
+        name: Build and Publish images
+        run: |
+          ./publish.sh
