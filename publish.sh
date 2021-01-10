@@ -70,12 +70,21 @@ for python_version in "${python_versions[@]}"; do
 
             if [ "$matching_python_version" == "$full_python_version" ]; then
                 echo "Building for python version ${full_python_version}-${variant}-${debian_version}..."
-                docker buildx build --platform "${platforms}" \
-                    --push \
+                created_date=`date --utc --rfc-3339=seconds`
+                echo "${variant}/${python_version}/${debian_version}/"
+                docker buildx build \
+                    --platform "${platforms}" \
+                    --label "org.opencontainers.image.title=python" \
+                    --label "org.opencontainers.image.description=python in Docker" \
+                    --label "org.opencontainers.image.source=https://github.com/${GITHUB_REPOSITORY}" \
+                    --label "org.opencontainers.image.revision=${GITHUB_SHA}" \
+                    --label "org.opencontainers.image.created=${created_Date}" \
+                    --label "org.opencontainers.image.version=${full_python_version}" \
                     --tag "${docker_base_repo}:${python_version}-${variant}-${debian_version}" \
                     --tag "${docker_base_repo}:${full_python_version}-${variant}-${debian_version}" \
                     --tag "${ghcr_base_repo}:${python_version}-${variant}-${debian_version}" \
                     --tag "${ghcr_base_repo}:${full_python_version}-${variant}-${debian_version}" \
+                    --push \
                     --file "${variant}/${python_version}/${debian_version}/Dockerfile" \
                     "${variant}/${python_version}/${debian_version}/"
             else
