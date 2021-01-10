@@ -27,12 +27,20 @@ fi
 GITHUB_OWNER=$(echo "${GITHUB_REPOSITORY}" | cut -d'/' -f1)
 
 python_versions=( "$@" )
-if [ ${#python_versions[@]} -eq 0 ]; then
-    mapfile -t python_versions < PYTHON_VERSIONS
-fi
-python_versions=( "${python_versions[@]%/}" )
 
-mapfile -t debian_versions < DEBIAN_VERSIONS
+if [ ${#python_versions[@]} -eq 0 ]; then
+    if [[ -n "$PYTHON_VERSION" ]]; then
+        python_versions=( "${PYTHON_VERSION}" )
+    else
+        mapfile -t python_versions < PYTHON_VERSIONS
+    fi
+fi
+
+if [[ -n "$DEBIAN_VERSION" ]]; then
+    debian_versions=( "${DEBIAN_VERSION}" )
+else
+    mapfile -t debian_versions < DEBIAN_VERSIONS
+fi
 
 platforms="linux/amd64,linux/arm/v7,linux/arm64/v8"
 

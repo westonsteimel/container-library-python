@@ -3,7 +3,7 @@ on:
     branches:
       - main
   schedule:
-    - cron: '0 1 * * *'
+    - cron: '0 2 * * *'
 name: Build and publish
 env:
   DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
@@ -13,6 +13,10 @@ jobs:
   build_and_publish:
     name: Build and Publish
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.6', '3.7', '3.8', '3.9', '3.10-rc']
+        debian-version: ['buster', 'bullseye', 'sid']
     steps:
       -
         name: Checkout
@@ -25,5 +29,8 @@ jobs:
         uses: docker/setup-buildx-action@v1
       - 
         name: Build and Publish images
+        env:
+          PYTHON_VERSION: ${{ matrix.python-version }}
+          DEBIAN_VERSION: ${{ matrix.debian-version }}
         run: |
           ./publish.sh
