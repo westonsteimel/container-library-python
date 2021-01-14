@@ -1,9 +1,6 @@
 on: 
-  push:
-    branches:
-      - main
   schedule:
-    - cron: '0 2 * * *'
+    - cron: '0 2 * * SAT'
 name: Build and publish
 env:
   DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
