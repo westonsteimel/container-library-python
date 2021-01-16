@@ -9,11 +9,6 @@ GNU_ARCH="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)"
 
 apt-get purge -y --auto-remove dpkg-dev
 
-apt-get update && apt-get install -y --no-install-recommends \
-    libmpdec2 \
-    ca-certificates \
-    tzdata 
-
 mkdir --parents \
     /build/rootfs \
     /build/rootfs/tmp \
