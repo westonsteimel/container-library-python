@@ -101,6 +101,12 @@ cp --archive /usr/lib/${GNU_ARCH}/libffi.so.* /build/rootfs/usr/lib/
 dpkg-query --status libffi7 >> /build/rootfs/var/lib/dpkg/status
 printf '\n' >> /build/rootfs/var/lib/dpkg/status
 
+# libgcc-s1
+apt-get install -y --no-install-recommends libgcc-s1
+cp --archive /lib/${GNU_ARCH}/libgcc_s.so.* /build/rootfs/lib/
+dpkg-query --status libgcc-s1 >> /build/rootfs/var/lib/dpkg/status
+printf '\n' >> /build/rootfs/var/lib/dpkg/status
+
 # libgdbm6
 apt-get install -y --no-install-recommends libgdbm6
 cp --archive /usr/lib/${GNU_ARCH}/libgdbm.so.* /build/rootfs/usr/lib/
