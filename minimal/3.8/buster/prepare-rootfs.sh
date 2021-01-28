@@ -12,7 +12,7 @@ apt-get purge -y --auto-remove dpkg-dev
 mkdir --parents \
     /build/rootfs \
     /build/rootfs/tmp \
-    /build/rootfs/var \
+    /build/rootfs/var/tmp \
     /build/rootfs/bin \
     /build/rootfs/lib \
     /build/rootfs/usr/lib \
@@ -24,6 +24,9 @@ mkdir --parents \
     /build/rootfs/usr/share/zoneinfo \
     /build/rootfs/etc/ssl/certs \
     /build/rootfs/var/lib/dpkg
+
+chmod a+trwx /build/rootfs/tmp
+chmod a+trwx /build/rootfs/var/tmp
 
 # We store all of the apt package info at /var/lib/dpkg/status and create a blank file /var/lib/dpkg/available so that 
 # vulnerability scanners such as trivy and clair will work
