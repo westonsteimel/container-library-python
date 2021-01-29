@@ -65,7 +65,7 @@ printf '\n' >> /build/rootfs/var/lib/dpkg/status
 
 # ca-certificates
 apt-get install -y --no-install-recommends ca-certificates
-cp --recursive --archive /etc/ssl/certs/* /build/rootfs/etc/ssl/certs/
+cp --archive /etc/ssl/certs/ca-certificates.crt /build/rootfs/etc/ssl/certs/
 dpkg-query --status ca-certificates >> /build/rootfs/var/lib/dpkg/status
 printf '\n' >> /build/rootfs/var/lib/dpkg/status
 
