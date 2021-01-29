@@ -22,6 +22,7 @@ mkdir --parents \
     /build/rootfs/usr/local/bin \
     /build/rootfs/usr/local/include \
     /build/rootfs/usr/share/zoneinfo \
+    /build/rootfs/etc/dpkg/origins \
     /build/rootfs/etc/ssl/certs \
     /build/rootfs/var/lib/dpkg
 
@@ -60,6 +61,10 @@ apt-get install -y --no-install-recommends base-files
 cp --archive /usr/lib/os-release /build/rootfs/usr/lib/
 cp --archive /etc/debian_version /build/rootfs/etc/
 cp --archive /etc/os-release /build/rootfs/etc/
+cp --archive /etc/dpkg/origins/debian /build/rootfs/etc/dpkg/origins/
+cp --archive /etc/host.conf /build/rootfs/etc/
+cp --archive /etc/issue /build/rootfs/etc/
+cp --archive /etc/issue.net /build/rootfs/etc/
 dpkg-query --status base-files >> /build/rootfs/var/lib/dpkg/status
 printf '\n' >> /build/rootfs/var/lib/dpkg/status
 
