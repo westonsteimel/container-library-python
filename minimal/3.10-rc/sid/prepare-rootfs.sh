@@ -243,3 +243,14 @@ rm --recursive --force \
 
 ln --symbolic --no-target-directory /lib /build/rootfs/lib64
 
+cat > /build/rootfs/etc/ld.so.conf << EOF
+/lib
+/usr/lib
+/usr/local/lib
+EOF
+
+cp --archive /sbin/ldconfig /build/rootfs/tmp/ldconfig
+chroot /build/rootfs/ /tmp/ldconfig
+
+rm /build/rootfs/tmp/ldconfig
+
