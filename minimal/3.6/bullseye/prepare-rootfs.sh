@@ -65,6 +65,8 @@ cp --archive /etc/dpkg/origins/debian /build/rootfs/etc/dpkg/origins/
 cp --archive /etc/host.conf /build/rootfs/etc/
 cp --archive /etc/issue /build/rootfs/etc/
 cp --archive /etc/issue.net /build/rootfs/etc/
+cp --archive /etc/nsswitch.conf /build/rootfs/etc/
+
 dpkg-query --status base-files >> /build/rootfs/var/lib/dpkg/status
 printf '\n' >> /build/rootfs/var/lib/dpkg/status
 
