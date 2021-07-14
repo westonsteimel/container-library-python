@@ -12,7 +12,7 @@ COPY --from=builder / /
 USER python
 WORKDIR /home/python
 
-ARG PYTHON_VERSION="3.8.10"
+ARG PYTHON_VERSION="3.8.11"
 ENV PATH="/usr/local/bin:${PATH}" \
     LD_LIBRARY_PATH="/usr/local/lib/:${LD_LIBRARY_PATH}" \
     LANG="C.UTF-8" \
