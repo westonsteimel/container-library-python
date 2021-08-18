@@ -6,7 +6,7 @@ name: Build and publish
 env:
   DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
   DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-  GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
+  GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   QUAY_USERNAME: ${{ secrets.QUAY_USERNAME }}
   QUAY_PASSWORD: ${{ secrets.QUAY_PASSWORD }}
 jobs:
