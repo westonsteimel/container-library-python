@@ -3,7 +3,7 @@
 #
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
-FROM docker.io/westonsteimel/python:3.10-rc-slim-sid as builder
+FROM ghcr.io/westonsteimel/python:3.10-rc-slim-sid as builder
 
 ADD prepare-rootfs.sh /
 RUN ./prepare-rootfs.sh

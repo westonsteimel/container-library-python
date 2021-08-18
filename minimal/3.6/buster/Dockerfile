@@ -3,7 +3,7 @@
 #
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
-FROM docker.io/westonsteimel/python:3.6-slim-buster as builder
+FROM ghcr.io/westonsteimel/python:3.6-slim-buster as builder
 
 ADD prepare-rootfs.sh /
 RUN ./prepare-rootfs.sh

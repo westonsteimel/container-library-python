@@ -3,7 +3,7 @@
 #
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
-FROM docker.io/westonsteimel/python:3.8-slim-bookworm as builder
+FROM ghcr.io/westonsteimel/python:3.8-slim-bookworm as builder
 
 ADD prepare-rootfs.sh /
 RUN ./prepare-rootfs.sh

@@ -1,4 +1,4 @@
-FROM docker.io/westonsteimel/python:%%PLACEHOLDER%% as builder
+FROM ghcr.io/westonsteimel/python:%%PLACEHOLDER%% as builder
 
 ADD prepare-rootfs.sh /
 RUN ./prepare-rootfs.sh

@@ -3,7 +3,7 @@
 #
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
-FROM docker.io/westonsteimel/python:3.8-minimal-bullseye as builder
+FROM ghcr.io/westonsteimel/python:3.8-minimal-bullseye as builder
 
 FROM docker.io/library/busybox:glibc
 

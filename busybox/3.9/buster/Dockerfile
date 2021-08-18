@@ -3,7 +3,7 @@
 #
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
-FROM docker.io/westonsteimel/python:3.9-minimal-buster as builder
+FROM ghcr.io/westonsteimel/python:3.9-minimal-buster as builder
 
 FROM docker.io/library/busybox:glibc
 

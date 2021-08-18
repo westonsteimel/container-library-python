@@ -192,7 +192,7 @@ for version in "${python_versions[@]}"; do
 			        -e 's!^(ARG PYTHON_GET_PIP_URL=")%%PLACEHOLDER%%!\1'"$getPipUrl"'!' \
 			        -e 's!^(ARG PYTHON_GET_PIP_SHA256=")%%PLACEHOLDER%%!\1'"$getPipSha256"'!' \
 			        -e 's/^(FROM python):%%PLACEHOLDER%%/\1:'"$version-$tag"'/' \
-			        -e 's!^(FROM (docker.io/library/debian|docker.io/westonsteimel/python)):%%PLACEHOLDER%%!\1:'"$tag"'!' \
+			        -e 's!^(FROM (docker.io/library/debian|docker.io/westonsteimel/python|ghcr.io/westonsteimel/python)):%%PLACEHOLDER%%!\1:'"$tag"'!' \
 			        "${dockerfile}"
 
                 major="${rcVersion%%.*}"
