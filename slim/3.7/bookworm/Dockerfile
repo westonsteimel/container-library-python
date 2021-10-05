@@ -150,8 +150,8 @@ RUN cd /usr/local/bin \
 ARG PYTHON_PIP_VERSION="21.2.4"
 ENV PYTHON_PIP_VERSION="${PYTHON_PIP_VERSION}"
 # https://github.com/pypa/get-pip
-ARG PYTHON_GET_PIP_URL="https://github.com/pypa/get-pip/raw/c20b0cfd643cd4a19246ccf204e2997af70f6b21/public/get-pip.py"
-ARG PYTHON_GET_PIP_SHA256="fa6f3fb93cce234cd4e8dd2beb54a51ab9c247653b52855a48dd44e6b21ff28b"
+ARG PYTHON_GET_PIP_URL="https://github.com/pypa/get-pip/raw/d781367b97acf0ece7e9e304bf281e99b618bf10/public/get-pip.py"
+ARG PYTHON_GET_PIP_SHA256="01249aa3e58ffb3e1686b7141b4e9aac4d398ef4ac3012ed9dff8dd9f685ffe0"
 
 RUN set -ex; \
 	\

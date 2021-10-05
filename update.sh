@@ -46,6 +46,10 @@ declare -A gpgKeys=(
 	# gpg: key 64E628F8D684696D: public key "Pablo Galindo Salgado <pablogsal@gmail.com>" imported
 	[3.10]='A035C8C19219BA821ECEA86B64E628F8D684696D'
 	# https://www.python.org/dev/peps/pep-0619/#release-manager-and-crew
+
+    # gpg: key 64E628F8D684696D: public key "Pablo Galindo Salgado <pablogsal@gmail.com>" importedy
+    [3.11]='A035C8C19219BA821ECEA86B64E628F8D684696D'
+    # https://www.python.org/dev/peps/pep-0664/#release-manager-and-crew
 )
 
 cd "$(dirname "$(readlink -f "$BASH_SOURCE")")"
