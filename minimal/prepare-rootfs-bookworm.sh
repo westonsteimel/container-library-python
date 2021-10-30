@@ -104,10 +104,10 @@ cp --archive /usr/lib/${GNU_ARCH}/libexpatw.so.* /build/rootfs/usr/lib/
 dpkg-query --status libexpat1 >> /build/rootfs/var/lib/dpkg/status
 printf '\n' >> /build/rootfs/var/lib/dpkg/status
 
-# libffi7
-apt-get install -y --no-install-recommends libffi7
+# libffi8
+apt-get install -y --no-install-recommends libffi8
 cp --archive /usr/lib/${GNU_ARCH}/libffi.so.* /build/rootfs/usr/lib/
-dpkg-query --status libffi7 >> /build/rootfs/var/lib/dpkg/status
+dpkg-query --status libffi8 >> /build/rootfs/var/lib/dpkg/status
 printf '\n' >> /build/rootfs/var/lib/dpkg/status
 
 # libgcc-s1
