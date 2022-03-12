@@ -19,16 +19,6 @@ if [[ -z "$GHCR_TOKEN" ]]; then
     exit 1
 fi
 
-if [[ -z "$QUAY_USERNAME" ]]; then
-    echo "Set the QUAY_USERNAME environment variable."
-    exit 1
-fi
-
-if [[ -z "$QUAY_PASSWORD" ]]; then
-    echo "Set the QUAY_PASSWORD environment variable."
-    exit 1
-fi
-
 if [[ -z "$GITHUB_REPOSITORY" ]]; then
     echo "Set the GITHUB_REPOSITORY environment variable."
     exit 1
@@ -58,12 +48,9 @@ platforms="linux/amd64,linux/arm/v7,linux/arm64/v8"
 echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin "docker.io"
 # Login to GitHub Container registry
 echo "${GHCR_TOKEN}" | docker login -u "${GITHUB_OWNER}" --password-stdin "ghcr.io"
-# Login to Quay
-echo "${QUAY_PASSWORD}" | docker login -u "${QUAY_USERNAME}" --password-stdin "quay.io"
 
 docker_base_repo="docker.io/${DOCKER_USERNAME}/python"
 ghcr_base_repo="ghcr.io/${GITHUB_OWNER}/python"
-quay_base_repo="quay.io/${QUAY_USERNAME}/python"
 
 for python_version in "${python_versions[@]}"; do
     echo "${python_version}"
@@ -97,8 +84,6 @@ for python_version in "${python_versions[@]}"; do
                     --tag "${docker_base_repo}:${full_python_version}-${variant}-${debian_version}" \
                     --tag "${ghcr_base_repo}:${python_version}-${variant}-${debian_version}" \
                     --tag "${ghcr_base_repo}:${full_python_version}-${variant}-${debian_version}" \
-                    --tag "${quay_base_repo}:${python_version}-${variant}-${debian_version}" \
-                    --tag "${quay_base_repo}:${full_python_version}-${variant}-${debian_version}" \
                     --push \
                     --file "${variant}/${python_version}/${debian_version}/Dockerfile" \
                     "${variant}/${python_version}/${debian_version}/"
