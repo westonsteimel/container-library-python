@@ -16,7 +16,6 @@ mkdir --parents \
     /build/rootfs/bin \
     /build/rootfs/lib \
     /build/rootfs/usr/lib \
-    /build/rootfs/usr/lib/engines-1.1 \
     /build/rootfs/usr/bin \
     /build/rootfs/usr/local/lib \
     /build/rootfs/usr/local/bin \
@@ -168,12 +167,12 @@ cp --archive /lib/${GNU_ARCH}/libss.so.* /build/rootfs/lib/
 dpkg-query --status libss2 >> /build/rootfs/var/lib/dpkg/status
 printf '\n' >> /build/rootfs/var/lib/dpkg/status
 
-# libssl1.1
-apt-get install -y --no-install-recommends libssl1.1
+# libssl3
+apt-get install -y --no-install-recommends libssl3
 cp --archive /usr/lib/${GNU_ARCH}/libcrypto.so.* /build/rootfs/usr/lib/
 cp --archive /usr/lib/${GNU_ARCH}/libssl.so.* /build/rootfs/usr/lib/
-cp --recursive --archive /usr/lib/${GNU_ARCH}/engines-1.1/* /build/rootfs/usr/lib/engines-1.1/
-dpkg-query --status libssl1.1 >> /build/rootfs/var/lib/dpkg/status
+cp --recursive --archive /usr/lib/${GNU_ARCH}/* /build/rootfs/usr/lib/
+dpkg-query --status libssl3 >> /build/rootfs/var/lib/dpkg/status
 printf '\n' >> /build/rootfs/var/lib/dpkg/status
 
 # libstdc++6
