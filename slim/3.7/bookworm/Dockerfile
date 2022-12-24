@@ -24,7 +24,7 @@ RUN set -eux; \
 	rm -rf /var/lib/apt/lists/*
 
 ARG GPG_KEY="0D96DF4D4110E5C43FBFB17F2D347EA6AA65421D"
-ARG PYTHON_VERSION="3.7.15"
+ARG PYTHON_VERSION="3.7.16"
 ENV PYTHON_VERSION="${PYTHON_VERSION}"
 
 RUN set -ex \
@@ -147,11 +147,11 @@ RUN cd /usr/local/bin \
 	&& ln -s python3-config python-config
 
 # if this is called "PIP_VERSION", pip explodes with "ValueError: invalid truth value '<VERSION>'"
-ARG PYTHON_PIP_VERSION="22.3"
+ARG PYTHON_PIP_VERSION="22.3.1"
 ENV PYTHON_PIP_VERSION="${PYTHON_PIP_VERSION}"
 # https://github.com/pypa/get-pip
-ARG PYTHON_GET_PIP_URL="https://github.com/pypa/get-pip/raw/6d265be7a6b5bc4e9c5c07646aee0bf0394be03d/public/get-pip.py"
-ARG PYTHON_GET_PIP_SHA256="36c6f6214694ef64cc70f4127ac0ccec668408a93825359d998fb31d24968d67"
+ARG PYTHON_GET_PIP_URL="https://github.com/pypa/get-pip/raw/66030fa03382b4914d4c4d0896961a0bdeeeb274/public/get-pip.py"
+ARG PYTHON_GET_PIP_SHA256="1e501cf004eac1b7eb1f97266d28f995ae835d30250bec7f8850562703067dc6"
 
 RUN set -ex; \
 	\
