@@ -15,7 +15,7 @@ COPY --from=builder /build/rootfs/ /
 USER python
 WORKDIR /home/python
 
-ARG PYTHON_VERSION="3.12.0a4"
+ARG PYTHON_VERSION="3.12.0a7"
 ENV PATH="/usr/local/bin:${PATH}" \
     LANG="C.UTF-8" \
     PYTHON_VERSION="${PYTHON_VERSION}"
